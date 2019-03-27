@@ -1,0 +1,204 @@
+#-*- coding: utf-8 -*-
+#CameraWeb: # ルートに追加
+Login:
+
+<PaddingBoxLayout@BoxLayout>
+    padding: 20
+
+<Login>:
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 0.9, 0.9, 0.9, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            size_hint_y: 1.5  # vertical rate
+            font_size: 32
+            color: 0.1, 0.1, 0.1, 1
+            text: "Login"
+
+        BoxLayout:
+            orientation: "vertical"  # Vertical rate
+            size_hint_y: 8.5
+
+            PaddingBoxLayout:
+                Label:
+                    font_size: 20
+                    color: 0.1, 0.1, 0.1, 1
+                    text: "User"
+
+
+                TextInput:
+                    multiline: False  # Just ONE line
+                    write_tab: False  # Can go to new line
+                    font_size: 20
+                    id: user_id
+
+            PaddingBoxLayout:
+                Label:
+                    font_size: 20
+                    color: 0.1, 0.1, 0.1, 1
+                    text: "Password"
+
+                TextInput:
+                    multiline: False
+                    write_tab: False
+                    password: True
+                    font_size: 20
+                    id: user_password
+
+            Label:
+                text: "Message (When login error)"
+                color: 1, 0, 0, 1
+                id: message
+
+            Label:
+                text: "Server Setting(Debug)"
+
+            PaddingBoxLayout:
+                Label:
+                    text: "Blank"
+
+                Button:
+                    text: "Login"
+                    color: 1,1,1,1
+                    on_release: root.LoginButtonClicked()
+
+<ConnectionSetting>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        # VNect Connection Setting
+        BoxLayout:
+
+            orientation: "horizontal"
+            Label:
+                text: "VNect Server \n Setting"
+            Switch:
+                active: True
+                on_active: root.VNectSwitchOn(self.active)
+
+            Label:
+                text:"IP"
+            TextInput:
+                multiline: False
+                write_tab: False
+                text: "133.37.61.82"
+                id: vnect_server_ip
+
+            Label:
+                text:"PORT"
+            TextInput:
+                multiline: False
+                write_tab: False
+                text: "50501"
+                id: vnect_server_port
+
+            Button:
+                text: 'Connect'
+                on_release: root.VNectConnectButtonClicked()
+
+        Label:
+            id: vnect_message
+            text: ""
+            color: 0, 0, 0, 1
+                    # VNect Connection Setting
+
+        # Robomotion Connection Setting
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, None
+            Label:
+                text: "Robomotion API \n Setting"
+            Switch:
+                active: True
+                on_active: root.RobomotionSwitchOn(self.active)
+
+            Label:
+                text:"Robot Name"
+            TextInput:
+                text: "Pepper"
+                id: robot_name
+                write_tab: False
+
+            Label:
+                text:"Motion Name"
+            TextInput:
+                text: "Motion 01"
+                id: motion_name
+                write_tab: False
+
+            Button:
+                text: 'Connect'
+                on_release: root.RobomotionConnectButtonClicked()
+
+        Label:
+            id: robomotion_message
+            text: ""
+            color: 0, 0, 1, 1
+
+
+        # Start Button
+        BoxLayout:
+            size_hint_y: 1.5
+            orientation: "horizontal"
+            Button:
+                id: start_button
+                text: 'Start Webcam'
+                on_release: root.startButtonClicked()
+                disabled: True
+
+
+
+<CameraWeb>:
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+
+        BoxLayout:
+            size_hint_y: 1
+            Label:
+                size_hint_x: 2
+                text: "Message"
+
+            Label:
+                size_hint_x: 8
+                id: cameraweb_message
+                text: ""
+
+        # ラベル
+        BoxLayout:
+            size_hint_y: 8
+            orientation: "vertical"
+
+            KivyCamera:
+                id: kvcam
+
+        BoxLayout:
+            orientation: "horizontal"
+            height: 60
+            size_hint_y: 1
+
+            Button:
+                id: cam_start
+                text: "start"
+                font_size: 50
+                on_press: root.cam_start()
+
+            Button:
+                id: cam_start_vnect
+                font_size: 50
+                text: "Start VNect"
+                on_press: root.cam_start_websocket()
+
+            Button:
+                id: cam_stop
+                text: "stop"
+                font_size: 50
+                on_press: root.back_setting()
